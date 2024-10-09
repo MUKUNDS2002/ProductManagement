@@ -1,0 +1,80 @@
+﻿@model IEnumerable<ProductManagement.Models.ProductModal>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <button class="btn btn-primary" type="button" data-bs-target="#Modal" data-bs-toggle="modal" id="addNew"><i class="fa-solid fa-plus"></i></button>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">SN</th>
+            <th scope="col">Product</th>
+            <th scope="col">Description</th>
+            <th scope="col">Created</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.SN</th>
+                <td>@item.Product</td>
+                <td>@item.Description</td>
+                <td>@item.Created</td>
+                <td>
+                    <a class="btn btn-dark" asp-action="Delete" asp-route-id="@item.SN"><i class="fa-solid fa-minus"></i></a>
+                    <button class="btn btn-dark edit-btn"
+                            data-sn="@item.SN"
+                            data-product="@item.Product"
+                            data-description="@item.Description"
+                            data-created="@item.Created">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal HTML -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add/Edit Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="ProductForm">
+                    <input id="Hiddenid" type="hidden" />
+                    @Html.AntiForgeryToken() <!-- CSRF Protection -->
+                    <div class="mb-3">
+                        <label for="Product" class="col-form-label">Product Name:</label>
+                        <input type="text" class="form-control" id="Product" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Description" class="col-form-label">Product Description:</label>
+                        <input type="text" class="form-control" id="Description" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Created" class="col-form-label">Created:</label>
+                        <input type="number" class="form-control" id="Created" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="~/js/site.js"></script>
